@@ -1,0 +1,14 @@
+artifact_uri: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001/3a925331c56549b8ad119e7287632a0c/artifacts
+end_time: 1778140486346
+entry_point_name: ''
+experiment_id: '643261761450897001'
+lifecycle_stage: active
+run_id: 3a925331c56549b8ad119e7287632a0c
+run_name: linear-regression
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778140481184
+status: 3
+tags: []
+user_id: Erfan

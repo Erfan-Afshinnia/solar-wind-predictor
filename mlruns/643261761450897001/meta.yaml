@@ -1,0 +1,8 @@
+artifact_location: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001
+creation_time: 1778140134224
+experiment_id: '643261761450897001'
+last_update_time: 1778140134224
+lifecycle_stage: active
+name: solar-power-prediction
+trace_location: null
+workspace: default

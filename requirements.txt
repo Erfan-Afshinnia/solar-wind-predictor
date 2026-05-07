@@ -5,3 +5,5 @@ matplotlib==3.10.8
 seaborn==0.13.2
 jupyter==1.1.1
 notebook==7.5.5
+xgboost==2.1.0
+mlflow==2.22.0

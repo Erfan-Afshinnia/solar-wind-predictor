@@ -1,0 +1,22 @@
+artifact_path: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001/models/m-aa20b81620674a3b9dd968074daac5fe/artifacts
+flavors:
+  python_function:
+    data: model.ubj
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.xgboost
+    python_version: 3.13.9
+  xgboost:
+    code: null
+    data: model.ubj
+    model_class: xgboost.sklearn.XGBRegressor
+    model_format: ubj
+    xgb_version: 3.2.0
+mlflow_version: 3.12.0
+model_id: m-aa20b81620674a3b9dd968074daac5fe
+model_size_bytes: 305414
+model_uuid: m-aa20b81620674a3b9dd968074daac5fe
+prompts: null
+run_id: 984b0205857c4bd8bfcaa52ecab230d6
+utc_time_created: '2026-05-07 07:54:51.750100'

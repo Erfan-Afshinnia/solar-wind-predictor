@@ -1,0 +1,23 @@
+artifact_path: file:c:/Users/Erfan/solar-wind-predictor/notebooks/mlruns/1/models/m-e2316ec8f77d4e4682224f30049a1533/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+    skops_trusted_types: null
+mlflow_version: 3.12.0
+model_id: m-e2316ec8f77d4e4682224f30049a1533
+model_size_bytes: 6804521
+model_uuid: m-e2316ec8f77d4e4682224f30049a1533
+prompts: null
+run_id: c8427704d0b346daa551eb227aa909e2
+utc_time_created: '2026-05-07 08:19:54.769527'

@@ -1,0 +1,14 @@
+artifact_uri: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001/d92aa5805f2042348b679a65b6a768df/artifacts
+end_time: 1778140155034
+entry_point_name: ''
+experiment_id: '643261761450897001'
+lifecycle_stage: active
+run_id: d92aa5805f2042348b679a65b6a768df
+run_name: xgboost-tuned
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778140148574
+status: 4
+tags: []
+user_id: Erfan

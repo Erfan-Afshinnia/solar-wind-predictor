@@ -1,0 +1,10 @@
+artifact_location: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001/models/m-f7c7d98d30094cf6bda714eb24469cf7/artifacts
+creation_timestamp: 1778140143529
+experiment_id: '643261761450897001'
+last_updated_timestamp: 1778140148556
+model_id: m-f7c7d98d30094cf6bda714eb24469cf7
+model_type: null
+name: model
+source_run_id: 8e6eb05451a2466bb50fd30d0a884c3c
+status: 2
+status_message: null

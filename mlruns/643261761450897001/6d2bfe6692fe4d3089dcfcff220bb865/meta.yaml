@@ -1,0 +1,14 @@
+artifact_uri: file:c:/Users/Erfan/solar-wind-predictor/notebooks/../mlruns/643261761450897001/6d2bfe6692fe4d3089dcfcff220bb865/artifacts
+end_time: 1778140491547
+entry_point_name: ''
+experiment_id: '643261761450897001'
+lifecycle_stage: active
+run_id: 6d2bfe6692fe4d3089dcfcff220bb865
+run_name: random-forest
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1778140486351
+status: 3
+tags: []
+user_id: Erfan
