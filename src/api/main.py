@@ -83,7 +83,7 @@ async def predict_batch_endpoint(file: UploadFile = File(...)):
 
         return StreamingResponse(
             io.BytesIO(output.getvalue().encode()),
-            media_type= "text\csv",
+            media_type= "text/csv",
             headers={
                 "Content-Disposition":
                 "attachment; filename=predictions.csv"
