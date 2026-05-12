@@ -60,4 +60,23 @@ def fetch_weather(days_back: int = 34) -> pd.DataFrame:
         df["AMBIENT_TEMPERATURE"] + df["IRRADIATION"] * 25
     )
 
-    #
+    # Keep only daytime-like hours (4am-8pm)
+    df = df[df["DATE_TIME"].dt.hour.between(4, 20)].copy()
+    df = df.dropna()
+    df = df.reset_index(drop=True)
+
+    print(f"✅ Fetched {len(df)} hourly readings")
+    print(f"   Irradiation range: {df['IRRADIATION'].min():.3f}"
+          f" – {df['IRRADIATION'].max():.3f}")
+    print(f"   Temperature range: {df['AMBIENT_TEMPERATURE'].min():.1f}"
+          f" – {df['AMBIENT_TEMPERATURE'].max():.1f} °C")
+
+    _OUT.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(_OUT, index=False)
+    print(f"✅ Saved → {_OUT}")
+    return df
+
+
+if __name__ == "__main__":
+    df = fetch_weather()
+    print(df.head())
