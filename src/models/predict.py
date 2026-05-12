@@ -44,3 +44,34 @@ def predict_single(
     prediction = model.predict(dmatrix)[0]
 
     return float(max(0.0, prediction))
+
+def predict_batch(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Make predictions for a batch of rows.
+    Expects columns: DATA_TIME, IRRADIATION,
+                    MODULE_TEMPERATURE, AMBIENT_TEMPERATURE
+    Returns the input df with PREDICTED_AC_POWER_KW column added.
+    """
+    # Validate required columns
+    required = {"DATE_TIME", "IRRADIATION", "MODULE_TEMPERATURE", "AMBIENT_TEMPERATURE"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"Missing required columns: {missing}")
+    
+    # Parse datetime
+    df = df.copy()
+    df["DATE_TIME"] = pd.to_datetime(df["DATE_TIME"])
+
+    # Feature engineering
+    features = build_features(df)
+
+    # Predict
+    model = load_model()
+    dmatrix = xgb.DMatrix(features)
+    preds = model.predict(dmatrix)
+
+    # Clip negatives and attach to original df
+    df["PREDICTED_AC_POWER_KW"] = [
+        round(float(max(0.0, p)), 2) for p in preds
+    ]
+    return df

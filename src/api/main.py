@@ -1,5 +1,8 @@
+import io
+import pandas as pd
 from datetime import datetime
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from src.models.predict import predict_single
@@ -49,4 +52,46 @@ def predict(request: PredictionRequest):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/predict/batch")
+async def predict_batch_endpoint(file: UploadFile = File(...)):
+    """
+    Accept a CSV file and return predictions for all rows.
+    Required CSV columns:
+    DATE_TIME, IRRADIATION, MODULE_TEMPERATURE, AMBIENT_TEMPERATURE
+    """
+
+    # Validate file type
+    if not file.filename.endswith(".csv"):
+        raise HTTPException(
+            status_code=400,
+            detail="Only CSV files are accepted."
+        )
+    try:
+        # Read uploaded CSV
+        contents = await file.read()
+        df = pd.read_csv(io.StringIO(contents.decode("utf-8")))
+
+        # Run batch prediction
+        from src.models.predict import predict_batch
+        result_df = predict_batch(df)
+
+        # Convert result to CSV for download
+        output = io.StringIO()
+        result_df.to_csv(output, index=False)
+        output.seek(0)
+
+        return StreamingResponse(
+            io.BytesIO(output.getvalue().encode()),
+            media_type= "text\csv",
+            headers={
+                "Content-Disposition":
+                "attachment; filename=predictions.csv"
+            }
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
     
