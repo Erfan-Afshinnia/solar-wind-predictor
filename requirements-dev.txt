@@ -1,0 +1,9 @@
+-r requirements.txt
+matplotlib
+seaborn
+jupyter
+notebook
+mlflow
+streamlit
+pytest
+scipy

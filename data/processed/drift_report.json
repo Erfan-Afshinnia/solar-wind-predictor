@@ -1,0 +1,49 @@
+{
+  "features": {
+    "IRRADIATION": {
+      "ks_statistic": 0.0686,
+      "p_value": 0.0161,
+      "drift_detected": true
+    },
+    "MODULE_TEMPERATURE": {
+      "ks_statistic": 0.1375,
+      "p_value": 0.0,
+      "drift_detected": true
+    },
+    "AMBIENT_TEMPERATURE": {
+      "ks_statistic": 0.2016,
+      "p_value": 0.0,
+      "drift_detected": true
+    },
+    "HOUR": {
+      "ks_statistic": 0.0349,
+      "p_value": 0.5551,
+      "drift_detected": false
+    },
+    "MONTH": {
+      "ks_statistic": 0.6051,
+      "p_value": 0.0,
+      "drift_detected": true
+    },
+    "DAY_OF_YEAR": {
+      "ks_statistic": 0.985,
+      "p_value": 0.0,
+      "drift_detected": true
+    },
+    "HOUR_SIN": {
+      "ks_statistic": 0.0301,
+      "p_value": 0.735,
+      "drift_detected": false
+    },
+    "HOUR_COS": {
+      "ks_statistic": 0.0154,
+      "p_value": 0.9996,
+      "drift_detected": false
+    }
+  },
+  "summary": {
+    "total_features": 8,
+    "drifted_features": 5,
+    "drift_pct": 62.5
+  }
+}
