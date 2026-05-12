@@ -9,6 +9,10 @@
 
 A production-grade machine learning system that predicts solar plant AC power output from real-time weather sensor readings. Built end-to-end — from raw data exploration to a containerised REST API with CI/CD.
 
+## 🌐 Live API
+- **Health:** https://solar-wind-predictor.onrender.com/health
+- **Docs:** https://solar-wind-predictor.onrender.com/docs
+- **Predict:** https://solar-wind-predictor.onrender.com/predict
 ---
 
 ## 📊 Results
