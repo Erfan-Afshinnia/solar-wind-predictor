@@ -238,7 +238,7 @@ Real readings from a solar plant in India. 3,157 timestamps × 15-minute interva
 - [x] Docker containerisation
 - [x] GitHub Actions CI/CD
 - [x] Batch prediction endpoint
-- [ ] Model monitoring dashboard
+- [x] Model monitoring dashboard
 - [ ] Deploy to cloud (AWS / GCP)
 
 ---
