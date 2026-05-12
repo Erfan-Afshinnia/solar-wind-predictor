@@ -1,10 +1,10 @@
 import pandas as pd
 from pathlib import Path
-from evidently.report import Report
-from evidently.metrics_preset import (
-    DataDriftPreset,
-    RegressionPreset
-)
+
+# New imports for Evidently 0.7+
+from evidently import Report
+from evidently.presets import DataDriftPreset, RegressionPreset
+from evidently import Dataset, DataDefinition
 
 _ROOT = Path(__file__).resolve().parents[2]
 _REF  = _ROOT / "data" / "processed" / "reference_data.csv"
@@ -14,8 +14,9 @@ _OUT  = _ROOT / "data" / "processed" / "monitoring_report.html"
 FEATURE_COLS = [
     "IRRADIATION", "MODULE_TEMPERATURE",
     "AMBIENT_TEMPERATURE", "HOUR", "MONTH",
-    "DAY_OF_YEAR", "HOUR_SIN", "HOUR_COS"
+    "DAY_OF_YEAR", "HOUR_SIN", "HOUR_COS",
 ]
+
 
 def load_data():
     reference = pd.read_csv(_REF)
@@ -41,7 +42,19 @@ def generate_drift_report():
     cur["target"]     = current["ACTUAL_AC_POWER"]
     cur["prediction"] = current["PREDICTED_AC_POWER"]
 
-    report.run(reference_data=ref, current_data=cur)
+    data_definition = DataDefinition(
+        regression=[
+        {
+            "target": "target",
+            "prediction": "prediction",
+        }
+        ]
+    )
+    report.run(
+        reference_data=ref,
+        current_data=cur,
+        data_definition=data_definition
+    )
     report.save_html(str(_OUT))
     print(f"✅ Report saved to {_OUT}")
     return report
