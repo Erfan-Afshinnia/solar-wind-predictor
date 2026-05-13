@@ -3,11 +3,11 @@ import pandas as pd
 from pathlib import Path
 from datetime import datetime, timezone
 
-_ROOT     = Path(__file__).resolve().parents[2]
-_GEN      = _ROOT / "data" / "raw" / "Plant_1_Generation_Data.csv"
-_WEATHER  = _ROOT / "data" / "raw" / "Plant_1_Weather_Sensor_Data.csv"
-_OUT_DIR  = _ROOT / "data" / "feature_store"
-_PARQUET  = _OUT_DIR / "features.parquet"
+_ROOT    = Path(__file__).resolve().parents[2]
+_GEN     = _ROOT / "data" / "raw" / "Plant_1_Generation_Data.csv"
+_WEATHER = _ROOT / "data" / "raw" / "Plant_1_Weather_Sensor_Data.csv"
+_OUT_DIR = _ROOT / "feature_repo" / "data"          # ← changed
+_PARQUET = _OUT_DIR / "features.parquet"
 
 
 def build_feature_dataset() -> pd.DataFrame:
@@ -20,7 +20,7 @@ def build_feature_dataset() -> pd.DataFrame:
     gen["DATE_TIME"]     = pd.to_datetime(
         gen["DATE_TIME"], format="%d-%m-%Y %H:%M"
     )
-    weather["DATETIME"]  = pd.to_datetime(weather["DATETIME"])
+    weather["DATE_TIME"]  = pd.to_datetime(weather["DATE_TIME"])
 
     gen_agg = (gen.groupby("DATE_TIME")
                   .agg(AC_POWER=("AC_POWER", "sum"))

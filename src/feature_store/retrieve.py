@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 
 _ROOT    = Path(__file__).resolve().parents[2]
-_PARQUET = _ROOT / "data" / "feature_store" / "feature.parquet"
+_PARQUET = _ROOT / "feature_repo" / "data" / "features.parquet"
 
 FEATURE_COLS = ["IRRADIATION", "MODULE_TEMPERATURE", "AMBIENT_TEMPERATURE", "HOUR", "MONTH", "DAY_OF_YEAR", "HOUR_SIN", "HOUR_COS"]
 

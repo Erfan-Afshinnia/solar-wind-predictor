@@ -1,0 +1,45 @@
+
+a
+C
+plant_idSolar plant identifier"plant_idJsolar_power_predictor
+ËÎ‘Ğ¨ŞíVËÎ‘Ğ¨ŞíV
+J
+,
+__dummy"
+__dummy_idJsolar_power_predictor
+ËÎ‘Ğ¸êƒWËÎ‘Ğ¸êƒW1"$e6dc3265-e935-456e-b4b7-4bc4dcb8825e*ãÎ‘Ğ€øëÃ2µ
+ı
+weather_featuressolar_power_predictorplant_id"
+IRRADIATION"
+MODULE_TEMPERATURE"
+AMBIENT_TEMPERATURE"
+HOUR"	
+MONTH"
+DAY_OF_YEAR"
+HOUR_SIN"
+HOUR_COS"
+AC_POWER2€ç„:•event_timestampZdata/features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢data/features.parquet’ËÎ‘Ğà—)"ËÎ‘Ğ°åÎV@b
+plant_id’latest3
+ËÎ‘Ğ°™WãÎ‘Ğ°¼ĞÃ
+ãçŒÁĞÄÍİÎ‘ĞR¢
+Ÿ
+,feast.infra.online_stores.sqlite.SqliteTable"o
+EC:\Users\Erfan\solar-wind-predictor\feature_repo\data\online_store.db&solar_power_predictor_weather_featuresb­event_timestampZdata/features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢data/features.parquetªsolar_power_predictor’ËÎ‘Ğà—)"ËÎ‘Ğ°åÎVŠ5
+
+solar_power_predictor
+ËÎ‘Ğ€¼ë)ËÎ‘Ğ€¼ë)’Œ
+‰
+weather_featuressolar_power_predictor"feature_view*œ
+ı
+weather_featuressolar_power_predictorplant_id"
+IRRADIATION"
+MODULE_TEMPERATURE"
+AMBIENT_TEMPERATURE"
+HOUR"	
+MONTH"
+DAY_OF_YEAR"
+HOUR_SIN"
+HOUR_COS"
+AC_POWER2€ç„:•event_timestampZdata/features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢data/features.parquet’ËÎ‘Ğà—)"ËÎ‘Ğ°åÎV@b
+plant_id’latest
+ËÎ‘Ğ°™WËÎ‘Ğ°™W2ËÎ‘ĞğœøWB$dea4a70f-4a94-498e-8248-8b583998ba4f

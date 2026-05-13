@@ -1,9 +1,0 @@
-project: solar_power_predictor
-registry: data/feature_store/registry.db
-provider: local
-online_store:
-  type: sqlite
-  path: data/feature_store/online_store.db
-offline_store:
-  type: file
-entity_key_serialization_version: 2  

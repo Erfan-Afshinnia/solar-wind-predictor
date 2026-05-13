@@ -11,7 +11,7 @@ solar_plant = Entity(
 
 # Data source: where offline features live
 weather_source = FileSource(
-    path="data/feature_store/feature.parquet",
+    path="data/features.parquet",   # ← inside feature_repo/
     timestamp_field="event_timestamp",
 )
 
