@@ -2,7 +2,6 @@
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-data/raw/
 *.env
 models/*.joblib
 models/xgb_candidate.json
