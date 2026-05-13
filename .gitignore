@@ -5,3 +5,7 @@ __pycache__/
 data/raw/
 *.env
 models/*.joblib
+models/xgb_candidate.json
+models/*_backup_*.json
+notebooks/mlflow.db
+notebooks/mlruns/
