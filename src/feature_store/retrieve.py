@@ -23,7 +23,7 @@ def get_training_features() -> tuple:
     x  = df[FEATURE_COLS]
     y  = df["AC_POWER"]
 
-    print(f"✅ Retrieved {len(X)} training rows from feature store")
+    print(f"✅ Retrieved {len(x)} training rows from feature store")
     return x, y
 
 
