@@ -245,7 +245,7 @@ Real readings from a solar plant in India. 3,157 timestamps × 15-minute interva
 - [x] Model monitoring dashboard
 - [x] Deploy to cloud (AWS / GCP)
 - [x] Real-time data pipeline (Open-Meteo)
-- [x] Automated model retraining (every Monday
+- [x] Automated model retraining (every Monday)
 ---
 
 ## 👤 Author
