@@ -3,14 +3,13 @@ import xgboost as xgb
 import pandas as pd
 from pathlib import Path
 
-from src.features.build_features import build_features
+from src.feature_store.retrieve import get_inference_features   # ← new import
 
 _ROOT  = Path(__file__).resolve().parents[2]
 _MODEL = _ROOT / "models" / "xgb_champion.json"
 
 
 def load_model() -> xgb.Booster:
-    """Load the trained XGBoost model from disk."""
     if not _MODEL.exists():
         raise FileNotFoundError(f"Model not found at {_MODEL}")
     booster = xgb.Booster()
@@ -24,54 +23,41 @@ def predict_single(
     ambient_temperature: float,
     date_time: str,
 ) -> float:
-    """
-    Make a single prediction given sensor readings and timestamp.
-    Returns predicted AC power output in kW.
-    """
     model = load_model()
 
-    df = pd.DataFrame([{
-        "DATE_TIME":           pd.to_datetime(date_time),
-        "IRRADIATION":         irradiation,
-        "MODULE_TEMPERATURE":  module_temperature,
-        "AMBIENT_TEMPERATURE": ambient_temperature,
-    }])
+    # ── Features now come from feature store ──────────────
+    # Guaranteed identical to training features
+    features = get_inference_features(           # ← replaces build_features()
+        irradiation=irradiation,
+        module_temperature=module_temperature,
+        ambient_temperature=ambient_temperature,
+        date_time=date_time,
+    )
 
-    features = build_features(df)
-
-    # Booster requires DMatrix input
-    dmatrix = xgb.DMatrix(features)
+    dmatrix    = xgb.DMatrix(features)
     prediction = model.predict(dmatrix)[0]
-
     return float(max(0.0, prediction))
 
+
 def predict_batch(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Make predictions for a batch of rows.
-    Expects columns: DATA_TIME, IRRADIATION,
-                    MODULE_TEMPERATURE, AMBIENT_TEMPERATURE
-    Returns the input df with PREDICTED_AC_POWER_KW column added.
-    """
-    # Validate required columns
-    required = {"DATE_TIME", "IRRADIATION", "MODULE_TEMPERATURE", "AMBIENT_TEMPERATURE"}
+    required = {"DATE_TIME", "IRRADIATION",
+                "MODULE_TEMPERATURE", "AMBIENT_TEMPERATURE"}
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
-    
-    # Parse datetime
+
     df = df.copy()
     df["DATE_TIME"] = pd.to_datetime(df["DATE_TIME"])
 
-    # Feature engineering
-    features = build_features(df)
+    results = []
+    for _, row in df.iterrows():
+        pred = predict_single(
+            irradiation=row["IRRADIATION"],
+            module_temperature=row["MODULE_TEMPERATURE"],
+            ambient_temperature=row["AMBIENT_TEMPERATURE"],
+            date_time=str(row["DATE_TIME"]),
+        )
+        results.append(round(pred, 2))
 
-    # Predict
-    model = load_model()
-    dmatrix = xgb.DMatrix(features)
-    preds = model.predict(dmatrix)
-
-    # Clip negatives and attach to original df
-    df["PREDICTED_AC_POWER_KW"] = [
-        round(float(max(0.0, p)), 2) for p in preds
-    ]
+    df["PREDICTED_AC_POWER_KW"] = results
     return df

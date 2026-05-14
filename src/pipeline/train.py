@@ -18,39 +18,20 @@ FEATURES = [
     "HOUR", "MONTH", "DAY_OF_YEAR", "HOUR_SIN", "HOUR_COS"
 ]
 
-def load_and_prepare() -> pd.DataFrame:
-    """Load raw data and build feature-engineered dataset."""
-    gen     = pd.read_csv(_GEN)
-    weather = pd.read_csv(_WEATHER)
-
-    gen["DATE_TIME"]     = pd.to_datetime(gen["DATE_TIME"],
-                                         format="%d-%m-%Y  %H:%M")
-    weather["DATE_TIME"] = pd.to_datetime(weather["DATE_TIME"])
-    gen_agg = (gen.groupby("DATE_TIME").agg(AC_POWER=("AC_POWER", "sum")).reset_index())
-
-    df = pd.merge(gen_agg, weather[["DATE_TIME", "AMBIENT_TEMPERATURE", "MODULE_TEMPERATURE", "IRRADIATION"]],
-                  on="DATE_TIME", how="inner"
-    )
-
-    df["HOUR"]        = df["DATE_TIME"].dt.hour
-    df["MONTH"]       = df["DATE_TIME"].dt.month
-    df["DAY_OF_YEAR"] = df["DATE_TIME"].dt.dayofyear
-    df["HOUR_SIN"]    = np.sin(2 * np.pi * df["HOUR"] / 24)
-    df["HOUR_COS"]    = np.cos(2 * np.pi * df["HOUR"] / 24)
-
-    return df
+from src.feature_store.retrieve import get_training_features
 
 def train_candidate() -> dict:
     """
     Retrain XGBoost and save as candidate model.
     Returns evaluation metrics on test set.
     """
-    print("── Loading and preparing data ──────────────────")
-    df = load_and_prepare()
-    x = df[FEATURES]
-    y = df["AC_POWER"]
+    print("── Loading features from feature store ─────────")
+    X, y = get_training_features()
+    print(f"   Train/test split from {len(X)} rows")
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, shuffle=False)
+    x_train, x_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, shuffle=False
+    )
     print(f"     Train: {len(x_train)} rows | Test: {len(x_test)} rows")
 
     # Load best params from previous tuning
