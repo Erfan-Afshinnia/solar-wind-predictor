@@ -45,8 +45,9 @@ def train_candidate() -> dict:
             "n_estimators":       300,
             "learning_rate":      0.1,
             "max_depth":          6,
+            "min_child_weight":  3,
             "subsample":          0.7,
-            "colsample_bytree":   0.7,
+            "colsample_bytree":   1.0,
         }
     print("\n── Training candidate model ────────────────────")
     model = xgb.XGBRegressor(**params, random_state=42, n_jobs=-1)
