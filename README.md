@@ -1,254 +1,64 @@
-# ☀️ Solar Power Prediction & ML Pipeline
+# Solar Power Prediction & ML Pipeline
 
-![CI Pipeline](https://github.com/Erfan-Afshinnia/solar-wind-predictor/actions/workflows/ci.yml/badge.svg)
-![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
-![XGBoost](https://img.shields.io/badge/XGBoost-2.1-orange)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green?logo=fastapi)
-![Docker](https://img.shields.io/badge/Docker-ready-blue?logo=docker)
-![MLflow](https://img.shields.io/badge/MLflow-2.22-red)
+[![CI](https://github.com/Erfan-Afshinnia/solar-wind-predictor/actions/workflows/ci.yml/badge.svg)](https://github.com/Erfan-Afshinnia/solar-wind-predictor/actions/workflows/ci.yml)
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
+![Docker](https://img.shields.io/badge/Docker-ready-blue)
 
-A production-grade machine learning system that predicts solar plant AC power output from real-time weather sensor readings. Built end-to-end — from raw data exploration to a containerised REST API with CI/CD.
+End-to-end ML pipeline for predicting solar plant AC power from weather and time-based features.
 
-## 🌐 Live API
-- **Health:** https://solar-wind-predictor.onrender.com/health
-- **Docs:** https://solar-wind-predictor.onrender.com/docs
-- **Predict:** https://solar-wind-predictor.onrender.com/predict
----
+## Features
 
-## 📊 Results
+Shared feature engineering, XGBoost training, chronological evaluation, KS-test drift detection, drift-gated retraining, candidate/champion promotion, FastAPI inference, batch prediction, Docker, pytest, and GitHub Actions.
 
-| Model | MAE (kW) | RMSE (kW) | R² | vs Baseline |
-|---|---|---|---|---|
-| Linear Regression | 829.5 | 1,087.9 | 0.9785 | — |
-| Random Forest | 470.1 | 745.0 | 0.9899 | −43.3% |
-| **XGBoost (tuned)** | **456.8** | **678.5** | **0.9916** | **−44.9%** |
+## Model
 
-> Evaluated on daytime-only readings (irradiation > 0) to avoid nighttime zero inflation.
+Inputs: `IRRADIATION`, `MODULE_TEMPERATURE`, `AMBIENT_TEMPERATURE`, `HOUR`, `MONTH`, `DAY_OF_YEAR`, `HOUR_SIN`, `HOUR_COS`
 
----
+Champion: `models/xgb_champion.json`
 
-## 🏗️ Architecture
+A candidate replaces the champion only when its MAE is lower on the same chronological test set.
 
-```
-Raw Data (CSV)
-      │
-      ▼
-┌─────────────────┐
-│   EDA & Merge   │  pandas · seaborn · matplotlib
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│Feature Engineer │  Time features · Circular encoding
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  Model Training │  LinearReg · RandomForest · XGBoost
-│  + Tracking     │  MLflow experiment tracking
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│   FastAPI App   │  REST API · /predict · /health
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│     Docker      │  Containerised · Runs anywhere
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│  GitHub Actions │  Automated tests + Docker build on every push
-└─────────────────┘
-```
+## API
 
----
+`GET /health` · `POST /predict` · `POST /predict/batch`
 
-## 📁 Project Structure
+Example input: `irradiation=0.8, module_temperature=45.0, ambient_temperature=32.0, date_time="2020-06-01 12:00:00"`
 
-```
-solar-wind-predictor/
-├── .github/
-│   └── workflows/
-│       └── ci.yml              # GitHub Actions CI/CD pipeline
-├── data/
-│   ├── raw/                    # Original Kaggle dataset (gitignored)
-│   └── processed/              # EDA plots and outputs
-├── models/
-│   └── xgb_champion.json       # Trained XGBoost model (native format)
-├── notebooks/
-│   └── 01_eda.ipynb            # Full EDA, training, and evaluation
-├── src/
-│   ├── features/
-│   │   └── build_features.py   # Feature engineering pipeline
-│   ├── models/
-│   │   └── predict.py          # Model loading and inference
-│   └── api/
-│       └── main.py             # FastAPI application
-├── tests/
-│   └── test_predict.py         # Pytest unit tests
-├── Dockerfile
-├── requirements.txt
-└── README.md
-```
+Current champion output for this example: **6121.47 kW**
 
----
+Docs: `http://127.0.0.1:8000/docs`
 
-## 🚀 Quick Start
+## Testing
 
-### 1. Clone & Setup
+Five prediction tests cover daytime prediction, night-time behaviour, non-negative outputs, batch prediction, and missing-column validation.
 
-```bash
-git clone https://github.com/Erfan-Afshinnia/solar-wind-predictor.git
-cd solar-wind-predictor
+Run: `pytest tests/ -v`
 
-python -m venv .venv
-# Windows:
-.venv\Scripts\activate
-# Mac/Linux:
-source .venv/bin/activate
+## Docker
 
-pip install -r requirements.txt
-```
+`docker build -t solar-power-predictor .`
 
-### 2. Run the API
+`docker run -p 8000:8000 solar-power-predictor`
 
-```bash
-uvicorn src.api.main:app --reload
-```
+## CI/CD
 
-API is now live at **http://127.0.0.1:8000**
+GitHub Actions validates tests, Docker build, and API health. Scheduled retraining checks drift, trains a candidate, evaluates it against the champion, and promotes it only when MAE improves.
 
-### 3. Run with Docker
+## Tech Stack
 
-```bash
-docker build -t solar-power-predictor .
-docker run -p 8000:8000 solar-power-predictor
-```
+Python · pandas · NumPy · scikit-learn · XGBoost · FastAPI · Streamlit · PyArrow · pytest · Docker · GitHub Actions
 
----
+## Dataset
 
-## 🔌 API Usage
+Solar Power Generation Data: https://www.kaggle.com/datasets/anikannal/solar-power-generation-data
 
-### Predict Power Output
+Expected location: `data/raw/`
 
-```bash
-POST /predict
-```
+## Engineering Note
 
-**Request:**
-```json
-{
-  "irradiation": 0.8,
-  "module_temperature": 45.0,
-  "ambient_temperature": 32.0,
-  "date_time": "2020-06-01 12:00:00"
-}
-```
+`src/pipeline/fetch_data.py` contains an Open-Meteo weather-fetching utility. It is currently standalone and is not directly connected to scheduled retraining.
 
-**Response:**
-```json
-{
-  "predicted_ac_power_kw": 22010.57,
-  "date_time": "2020-06-01 12:00:00",
-  "irradiation": 0.8,
-  "status": "success"
-}
-```
+## Author
 
-### Interactive Docs
-
-FastAPI auto-generates interactive documentation:
-
-```
-http://127.0.0.1:8000/docs
-```
-
-### Health Check
-
-```bash
-GET /health
-# {"status": "ok"}
-```
-
----
-
-## 🧪 Tests
-
-```bash
-pip install pytest
-pytest tests/ -v
-```
-
-```
-tests/test_predict.py::test_sunny_noon_prediction              PASSED
-tests/test_predict.py::test_zero_irradiation_returns_near_zero PASSED
-tests/test_predict.py::test_prediction_is_non_negative         PASSED
-3 passed in 2.74s
-```
-
----
-
-## 📈 MLflow Experiment Tracking
-
-```bash
-mlflow ui --backend-store-uri sqlite:///notebooks/mlflow.db
-```
-
-Open **http://127.0.0.1:5000** to view all experiment runs, parameters, and metrics.
-
----
-
-## 📦 Dataset
-
-[Solar Power Generation Data](https://www.kaggle.com/datasets/anikannal/solar-power-generation-data) — Kaggle
-
-Real readings from a solar plant in India. 3,157 timestamps × 15-minute intervals across May–June 2020.
-
-| Feature | Description |
-|---|---|
-| `IRRADIATION` | Solar irradiation (W/m²) — strongest predictor |
-| `MODULE_TEMPERATURE` | Solar panel surface temperature (°C) |
-| `AMBIENT_TEMPERATURE` | Air temperature (°C) |
-| `DATE_TIME` | Timestamp → extracted HOUR, MONTH, DAY_OF_YEAR, HOUR_SIN, HOUR_COS |
-| `AC_POWER` | **Target** — total plant power output (kW) |
-
----
-
-## ⚙️ Tech Stack
-
-| Category | Tools |
-|---|---|
-| Data & EDA | pandas, numpy, matplotlib, seaborn |
-| ML | scikit-learn, XGBoost |
-| Experiment Tracking | MLflow |
-| API | FastAPI, uvicorn, pydantic |
-| Containerisation | Docker |
-| Testing | pytest |
-| CI/CD | GitHub Actions |
-
----
-
-## 🗺️ Roadmap
-
-- [x] EDA & data pipeline
-- [x] Baseline model (Linear Regression)
-- [x] Feature engineering
-- [x] Model comparison & hyperparameter tuning
-- [x] MLflow experiment tracking
-- [x] FastAPI REST endpoint
-- [x] Docker containerisation
-- [x] GitHub Actions CI/CD
-- [x] Batch prediction endpoint
-- [x] Model monitoring dashboard
-- [x] Deploy to cloud (AWS / GCP)
-- [x] Real-time data pipeline (Open-Meteo)
-- [x] Automated model retraining (every Monday)
----
-
-## 👤 Author
-
-**Erfan Afshinnia**
-[GitHub](https://github.com/Erfan-Afshinnia)
+**Erfan Afshinnia** · [GitHub](https://github.com/Erfan-Afshinnia)
