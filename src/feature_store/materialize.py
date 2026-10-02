@@ -1,17 +1,17 @@
-import numpy as np
 import pandas as pd
 from pathlib import Path
-from datetime import datetime, timezone
+
+from src.features.build_features import build_features
 
 _ROOT    = Path(__file__).resolve().parents[2]
 _GEN     = _ROOT / "data" / "raw" / "Plant_1_Generation_Data.csv"
 _WEATHER = _ROOT / "data" / "raw" / "Plant_1_Weather_Sensor_Data.csv"
-_OUT_DIR = _ROOT / "feature_repo" / "data"          # ← changed
+_OUT_DIR = _ROOT / "feature_repo" / "data"
 _PARQUET = _OUT_DIR / "features.parquet"
 
 
 def build_feature_dataset() -> pd.DataFrame:
-    """Build complete feature dataset and asve as parquet."""
+    """Build complete feature dataset and save as parquet."""
     print("── Building feature dataset ─────────────────────")
 
     gen     = pd.read_csv(_GEN)
@@ -32,12 +32,13 @@ def build_feature_dataset() -> pd.DataFrame:
         on="DATE_TIME", how="inner"
     )
 
-    # Time features
-    df["HOUR"]          = df["DATE_TIME"].dt.hour
-    df["MONTH"]         = df["DATE_TIME"].dt.month
-    df["DAY_OF_YEAR"]   = df["DATE_TIME"].dt.dayofyear
-    df["HOUR_SIN"]      = np.sin(2 * np.pi * df["HOUR"] / 24)
-    df["HOUR_COS"]      = np.cos(2** np.pi * df["HOUR"] / 24)
+    # Build model features using the shared feature-engineering pipeline
+    features = build_features(df)
+
+    df = pd.concat(
+    [df[["DATE_TIME", "AC_POWER"]], features],
+    axis=1
+    )
 
     # Required Feast Columns
     # event_timestamp: when the feature was observed

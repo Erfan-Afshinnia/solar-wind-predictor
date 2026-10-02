@@ -1,4 +1,4 @@
-# 🌞 Solar & Wind Power Output Predictor
+# ☀️ Solar Power Prediction & ML Pipeline
 
 ![CI Pipeline](https://github.com/Erfan-Afshinnia/solar-wind-predictor/actions/workflows/ci.yml/badge.svg)
 ![Python](https://img.shields.io/badge/Python-3.13-blue?logo=python)
