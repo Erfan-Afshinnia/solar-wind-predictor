@@ -5,5 +5,4 @@ __pycache__/
 notebooks/
 data/
 mlruns/
-mlflow.db
 tests/
