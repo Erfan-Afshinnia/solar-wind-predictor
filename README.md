@@ -55,10 +55,6 @@ Solar Power Generation Data: https://www.kaggle.com/datasets/anikannal/solar-pow
 
 Expected location: `data/raw/`
 
-## Engineering Note
-
-`src/pipeline/fetch_data.py` contains an Open-Meteo weather-fetching utility. It is currently standalone and is not directly connected to scheduled retraining.
-
 ## Author
 
 **Erfan Afshinnia** · [GitHub](https://github.com/Erfan-Afshinnia)
