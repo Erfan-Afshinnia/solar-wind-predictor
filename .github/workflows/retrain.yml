@@ -26,7 +26,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install dependencies
-        run: pip install -r requirements-dev.txt
+        run: pip install -r requirements.txt
 
       - name: Run retraining pipeline
         run: PYTHONPATH=. python src/pipeline/run_pipeline.py
