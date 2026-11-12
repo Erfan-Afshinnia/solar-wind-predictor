@@ -5,6 +5,11 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-green)
 ![Docker](https://img.shields.io/badge/Docker-ready-blue)
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/cover_dark.png">
+  <img alt="Pipeline overview: plant and weather data, feature engineering into a Parquet feature store, XGBoost training on a chronological split, champion/candidate promotion by MAE, and FastAPI serving in Docker, with weekly retraining in GitHub Actions and KS-test drift monitoring." src="assets/cover_light.png">
+</picture>
+
 End-to-end ML pipeline for predicting solar plant AC power from weather and time-based features.
 
 ## Features
